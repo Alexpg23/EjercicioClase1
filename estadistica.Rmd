@@ -1,0 +1,75 @@
+
+```{r Histograma}
+directorio <- "C:/Users/alex/Documents/ITAM/Sexto Semestre/Estadistica Aplicada I/Ejercicio Clase"
+setwd(directorio)
+TC.Banxico <- read.table("./tipoCambioBanxico.txt", sep= "|", header = TRUE, stringsAsFactors= FALSE)
+TC.Banxico$Fecha.DOF <- as.Date(TC.Banxico$Fecha.DOF, format = "%d/%m/%Y")
+TC.Banxico$Periodo<- as.POSIXlt(TC.Banxico$Fecha.DOF)$year+1900
+par(mfrow=c(3,3))
+for(year in 2006:2014){
+  TC.Banxico.existentes<- subset(TC.Banxico, TC !="N/E" & Periodo == year)
+  TC.Banxico.existentes$TC<-as.numeric(TC.Banxico.existentes$TC) 
+       hist(TC.Banxico.existentes$TC, 
+            breaks = seq(9.9, 15.4, length.out = 30), 
+            col = "blue", 
+            border = "white", 
+            main = as.character(year), 
+            xlab = "Tipo de cambio del dolar de E.U.A", 
+            ylab = "Frecuancia", xlim = c(9.9,15.4), ylim = c(0,120))
+  media <- mean(TC.Banxico.existentes$TC, na.rm=TRUE)
+  mediana <- median(TC.Banxico.existentes$TC, na.rm=TRUE)
+  abline(v= media, col = "red", lwd = 1)
+  abline(v= mediana, col = "black", lwd = 1)
+  }
+```
+
+####Interpretación:
+
+######En 2006 se observa que el comportamiento del tipo de cambio tuvo un nivel variable con un rango amplio en comparación con el siguiente año (2007), situándose en cerca de once pesos durante una buena parte del tiempo, variando desde 10.50 hasta 11.50 aproximadamente. En 2007 estuvo casi estable en los once pesos. El rango de variación en 2008 es todavía más amplio, situándose entre los 10.40 hasta los 11.80 más o menos gran parte del tiempo, subiendo hasta unos catorce pesos en la segunda mitad del año, con un valor más frecuente de 13.40 a 13.50 en esta mitad. En 2009 llegó a superar incluso los 15.00 pesos, con un tipo de cambio más constante de 13.30 a 13.50. En 2010 hubo más estabilidad con mayor frecuencia de menos de 13.00 pesos, sin bajar de 12.30, aunque al siguiente año sí hubo mayor rango, llegando a veces hasta cerca de 14.50. Comparando los siguientes años, vemos mayor estabilidad hasta 2014 donde prácticamente estuvo entre 13.00 y 13.50 la mayor parte del año.
+
+
+######Para la interpretación de mediana de estos períodos, con máximos y mínimos vemos lo siguiente: 2006, mediana de cerca de 11.00, similar a 2007. En 2008 la mediana fue similar, pero con máximos mucho más amplios, de cerca de 14.00, pero en 2009 los valores fueron para arriba, con mediana de 13.50 y máximo de más de 15.00.  Mayor estabilidad en 2010, con valores superiores a 12.00 y menores de 14.00, con mediana de 12.70. En 2011 mejor apreciación del peso, aunque sí llegó a niveles de cerca de 14.50, pero la mediana se situó en un poco más de 12.00. Volviendo a los siguientes años. También vemos mayor estabilidad en los siguientes años y en 2014 varió desde cerca de 12.60 hasta menos de 13.50, pero con amplia tendencia a la estabilidad mediana de 13.00.
+
+```{r Boxplot}
+directorio <- "C:/Users/alex/Documents/ITAM/Sexto Semestre/Estadistica Aplicada I/Ejercicio Clase"
+setwd(directorio)
+TC.Banxico <- read.table("./tipoCambioBanxico.txt", sep= "|", header = TRUE, stringsAsFactors= FALSE)
+TC.Banxico$Fecha.DOF <- as.Date(TC.Banxico$Fecha.DOF, format = "%d/%m/%Y")
+TC.Banxico$Periodo<- as.POSIXlt(TC.Banxico$Fecha.DOF)$year+1900
+par(mfrow=c(3,3))
+for(year in 2006:2014){
+  TC.Banxico.existente<- subset(TC.Banxico, TC !="N/E" & Periodo == year)
+  TC.Banxico.existente$TC<-as.numeric(TC.Banxico.existente$TC) 
+       with(TC.Banxico.existente,
+            boxplot(TC~factor(Periodo),
+                    range = 0,
+                    varwidth = TRUE))
+  }
+```
+
+####Interpretación:
+
+######A pesar de que este tipo de grafica refleja los mismos datos que los histogramas anteriores, es más fácil apreciar aqui en que valores se encuentran más concentrados la mayoría de los tipos de cambios de cada año y como se distribuyen respecto a la media. También es más fácil apreciar los valores máximo y mínimo que se alcanzaron en cada año. Es por ello que apesar de que las conclusiones son parecidas en ambos casos, para este tipo de datos creemo que es mejor utilizar este tipo de gráficas. 
+
+```{r Función de Densidad de una distribución normal estándar, fig.show= TRUE}
+x<-c(-4:4)
+curve(((1/((2*pi)^(1/2)))*(exp(-(x^2)/2))),from = -4, to = 4, xlab = "x", ylab = "f(x)", add = FALSE, col = "red", main = " Gráfica de la función ((1/((2*pi)^(1/2)))*(exp(-(x^2)/2)))")
+abline(v=0, col = "black", lwd = 1)
+points(x=0, y = max(((1/((2*pi)^(1/2)))*(exp(-(x^2)/2)))), col = "blue", pch=19)
+text(x=1.5, y = max(((1/((2*pi)^(1/2)))*(exp(-(x^2)/2)))), labels= "Valor máximo")
+text(x=1.5, y= 1, "expression(((frac(1,sqrt(2*pi)))%*%(e^(-frac(x^2,2)))))")
+text(4, 8.4, "expression(hat(beta) == (X^t * X)^{-1} * X^t * y)", cex = .75)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
